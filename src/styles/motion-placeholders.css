@@ -1,0 +1,50 @@
+/* =====================================================================
+   PLACEHOLDER MOTION
+   Generic, template-style animations standing in for the Figma motion
+   specs. Replace this file (and the hooks in src/hooks/useMotion.js)
+   with the final animation library once the site is live.
+   Everything here is disabled for users who prefer reduced motion.
+   ===================================================================== */
+
+/* Generic marquee: the track holds two identical copies and slides -50% */
+@keyframes placeholder-marquee {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: placeholder-marquee var(--marquee-duration, 30s) linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track { animation-play-state: paused; }
+
+/* Generic reveal-on-scroll (fade + rise). Uses an animation with
+   backwards fill so it never overrides components' own hover transitions. */
+@keyframes placeholder-reveal {
+  from { opacity: 0; transform: translateY(48px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+[data-reveal]:not(.is-visible) { opacity: 0; }
+[data-reveal].is-visible {
+  animation: placeholder-reveal 700ms var(--ease-out) backwards;
+  animation-delay: calc(var(--reveal-index, 0) * 110ms);
+}
+
+/* Generic idle float (footer artwork) */
+@keyframes placeholder-float {
+  0%, 100% { transform: rotate(0deg) scale(1); }
+  50% { transform: rotate(-3deg) scale(0.96); }
+}
+.float-idle { animation: placeholder-float 6s ease-in-out infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .marquee-track,
+  .float-idle { animation: none !important; }
+  [data-reveal], [data-reveal]:not(.is-visible) { opacity: 1; animation: none !important; }
+  *, *::before, *::after {
+    transition-duration: 1ms !important;
+    animation-duration: 1ms !important;
+  }
+}
